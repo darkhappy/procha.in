@@ -1,0 +1,42 @@
+[
+	{
+		"id": 0,
+		"type": "Examen",
+		"title": "Examen de mi-session",
+		"classe": { "name": "Réseaux", "type": "Technique" },
+		"pond": 25,
+		"date": "2021-10-25"
+	},
+	{
+		"id": 1,
+		"type": "Travail Pratique",
+		"title": "TP1",
+		"classe": { "name": "Prog 3", "type": "Technique" },
+		"pond": 10,
+		"date": "2021-11-05"
+	},
+	{
+		"id": 2,
+		"type": "Travail Pratique",
+		"title": "TP1",
+		"classe": { "name": "Modélisation", "type": "Technique" },
+		"pond": 50,
+		"date": "2021-10-29"
+	},
+	{
+		"id": 3,
+		"type": "Examen",
+		"title": "Examen",
+		"classe": { "name": "Prog", "type": "Technique" },
+		"pond": 25,
+		"date": "2021-11-10"
+	},
+	{
+		"id": 4,
+		"type": "Travail Pratique",
+		"title": "TP2",
+		"classe": { "name": "BD", "type": "Technique" },
+		"pond": 25,
+		"date": "2021-11-04"
+	}
+]
