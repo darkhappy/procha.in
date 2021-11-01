@@ -1,3 +1,14 @@
+import { User } from "@firebase/auth";
 import { createContext } from "react";
 
-export const UserContext = createContext({ user: null, username: null });
+type userState = {
+	user: User | undefined | null;
+	username: string | null;
+};
+
+const initialUserState: userState = {
+	user: null,
+	username: null,
+};
+
+export const UserContext = createContext(initialUserState);
