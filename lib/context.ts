@@ -3,12 +3,12 @@ import { createContext } from "react";
 
 type userState = {
 	user: User | undefined | null;
-	username: string | null;
+	da: string | null;
 };
 
 const initialUserState: userState = {
 	user: null,
-	username: null,
+	da: null,
 };
 
 export const UserContext = createContext(initialUserState);

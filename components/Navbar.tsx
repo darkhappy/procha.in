@@ -4,7 +4,7 @@ import { useContext } from "react";
 import { UserContext } from "../lib/context";
 
 export default function NavbarComponent({}) {
-	const { user, username } = useContext(UserContext);
+	const { user, da } = useContext(UserContext);
 
 	return (
 		<Navbar bg="light" expand="lg" className="mb-5">
@@ -18,7 +18,7 @@ export default function NavbarComponent({}) {
 						<Link href="/" passHref>
 							<NavLink>Home</NavLink>
 						</Link>
-						{username && (
+						{da ? (
 							<>
 								<Link href="/admin" passHref>
 									<NavLink>Admin</NavLink>
@@ -27,8 +27,7 @@ export default function NavbarComponent({}) {
 									<NavLink>Profile</NavLink>
 								</Link>
 							</>
-						)}
-						{!username && (
+						) : (
 							<>
 								<Link href="/login" passHref>
 									<NavLink>Log in</NavLink>
