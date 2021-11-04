@@ -1,5 +1,6 @@
 import { Container, Navbar, NavbarBrand, Nav, NavLink } from "react-bootstrap";
 import Link from "next/link";
+import Image from "next/image";
 import { useContext } from "react";
 import { UserContext } from "../lib/context";
 
@@ -18,7 +19,7 @@ export default function NavbarComponent({}) {
 						<Link href="/" passHref>
 							<NavLink>Home</NavLink>
 						</Link>
-						{da && (
+						{user && da && (
 							<>
 								<Link href="/admin" passHref>
 									<NavLink>Admin</NavLink>
@@ -29,13 +30,22 @@ export default function NavbarComponent({}) {
 							</>
 						)}
 					</Nav>
-					{da ? (
-						<Navbar.Text>
-							Signed in as:{" "}
-							<Link href="/profile" passHref>
-								<a>{da}</a>
-							</Link>
-						</Navbar.Text>
+					{user && da ? (
+						<Link href="/profile" passHref>
+							<a>
+								<Image
+									src={
+										user.photoURL
+											? user.photoURL
+											: "https://avataaars.io/?avatarStyle=Circle"
+									}
+									alt="Profile picture"
+									width={40}
+									height={40}
+									className="rounded-circle"
+								/>
+							</a>
+						</Link>
 					) : (
 						<Nav>
 							<Link href="/login" passHref>
