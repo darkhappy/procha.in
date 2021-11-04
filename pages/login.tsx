@@ -9,8 +9,9 @@ import React, {
 	useState,
 } from "react";
 import { UserContext } from "../lib/context";
-import { doc, getDoc } from "@firebase/firestore";
+import { doc, getDoc, writeBatch } from "@firebase/firestore";
 import { debounce } from "lodash";
+import { AppProps } from "next/app";
 
 export default function Enter() {
 	const { user, da } = useContext(UserContext);
@@ -20,6 +21,7 @@ export default function Enter() {
 	// 3. user signed in, has username <SignOutButton />
 	return (
 		<Container>
+			<h1>Login page</h1>
 			{user ? (
 				!da ? (
 					<>
@@ -27,13 +29,11 @@ export default function Enter() {
 					</>
 				) : (
 					<>
-						Sign out?
 						<SignOutButton />
 					</>
 				)
 			) : (
 				<>
-					<h1>Sign in</h1>
 					<SignInButton />
 				</>
 			)}
@@ -55,7 +55,7 @@ function SignInButton() {
 }
 
 // Sign out button
-function SignOutButton() {
+export function SignOutButton() {
 	return (
 		<Button onClick={() => signOut(auth)} variant="outline-secondary">
 			Sign out
@@ -91,13 +91,35 @@ function UsernameForm() {
 	const checkDA = useCallback(
 		debounce(async (da) => {
 			if (da.length == 7) {
-				const ref = doc(firestore, "das/", da);
+				const ref = doc(firestore, "das", da);
 				setIsValid(!(await getDoc(ref)).exists());
 				setLoading(false);
 			}
 		}, 500),
 		[]
 	);
+
+	const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+		e.preventDefault();
+
+		if (isValid) {
+			// Create refs for both documents
+			if (typeof user?.uid == "undefined") return;
+			const userDoc = doc(firestore, "users", user?.uid);
+			const daDoc = doc(firestore, "das", formValue);
+
+			// Commit both docs together as a batch write.
+			const batch = writeBatch(firestore);
+			batch.set(userDoc, {
+				da: formValue,
+				photoURL: user?.photoURL,
+				displayName: user?.displayName,
+			});
+			batch.set(daDoc, { uid: user?.uid });
+
+			await batch.commit();
+		}
+	};
 
 	useEffect(() => {
 		checkDA(formValue);
@@ -106,7 +128,7 @@ function UsernameForm() {
 	return (
 		<section>
 			<h3>Quelques informations</h3>
-			<Form>
+			<Form onSubmit={onSubmit}>
 				<Form.Group className="mb-3" controlId="formBasicUsername">
 					<Form.Label>DA</Form.Label>
 					<Form.Control
@@ -120,10 +142,31 @@ function UsernameForm() {
 						utilisateur personalisé plus tard.
 					</Form.Text>
 				</Form.Group>
+				<UsernameMessage da={formValue} isValid={isValid} loading={loading} />
 				<Button type="submit" variant="primary" disabled={!isValid}>
 					Choose
 				</Button>
 			</Form>
 		</section>
 	);
+}
+
+function UsernameMessage({
+	da,
+	isValid,
+	loading,
+}: {
+	da: string;
+	isValid: boolean;
+	loading: boolean;
+}) {
+	if (loading) {
+		return <p>Recherche...</p>;
+	} else if (isValid) {
+		return <p className="text-success">{da} est disponible!</p>;
+	} else if (da && !isValid) {
+		return <p className="text-danger">Ce DA est déjà enregistré!</p>;
+	} else {
+		return <p></p>;
+	}
 }
