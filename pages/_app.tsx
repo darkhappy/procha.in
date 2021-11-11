@@ -5,14 +5,14 @@ import { UserContext } from "../lib/context";
 import { useUserData } from "../lib/hooks";
 
 function MyApp({ Component, pageProps }: AppProps) {
-	const userData = useUserData();
+  const userData = useUserData();
 
-	return (
-		<UserContext.Provider value={userData}>
-			<NavbarComponent />
-			<Component {...pageProps} />
-		</UserContext.Provider>
-	);
+  return (
+    <UserContext.Provider value={userData}>
+      <NavbarComponent />
+      <Component {...pageProps} />
+    </UserContext.Provider>
+  );
 }
 
 export default MyApp;
