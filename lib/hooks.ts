@@ -21,8 +21,8 @@ export function useUserData() {
 			setDA(null);
 		}
 
-		return unsubscribe;
-	}, [user]);
+    return unsubscribe;
+  }, [user]);
 
 	return { user, da };
 }

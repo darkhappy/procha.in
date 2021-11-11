@@ -1,4 +1,4 @@
 export interface Class {
-	name: String;
-	type: String;
+  name: String;
+  type: String;
 }

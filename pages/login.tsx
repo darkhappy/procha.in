@@ -43,15 +43,15 @@ export default function Enter() {
 
 // Sign in with Google button
 function SignInButton() {
-	const googleSignIn = async () => {
-		await signInWithPopup(auth, googleAuthProvider);
-	};
+  const googleSignIn = async () => {
+    await signInWithPopup(auth, googleAuthProvider);
+  };
 
-	return (
-		<Button onClick={() => googleSignIn()} variant="outline-primary">
-			Sign in with Google
-		</Button>
-	);
+  return (
+    <Button onClick={() => googleSignIn()} variant="outline-primary">
+      Sign in with Google
+    </Button>
+  );
 }
 
 // Sign out button
